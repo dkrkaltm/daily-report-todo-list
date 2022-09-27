@@ -1,0 +1,109 @@
+/* loginJoinContainer */
+#loginJoinContainer{
+    display: flex;
+    height: 70vh;
+    margin-top: 15px;
+    text-align: center;
+}
+
+
+/* loginJoinStyle */
+.loginJoinTitleStyle{
+    font-size: 3.5rem;
+    font-weight: bolder;
+    margin: 25px 0 67px 0;
+}
+.loginJoinContainerStyle{
+    display: flex;
+    flex-direction: column;
+    margin:0 15% 0 15%;
+}
+.loginJoinStyleInput{
+    border:none;
+    background-color: #A64B2A;
+    border-bottom: solid 4.6px black;
+    margin-bottom: 25px;
+    height: 35px;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.loginJoinStyleInput::placeholder{
+    color: rgba(0,0,0,0.7);
+}
+.loginJoinStyleInput:focus{
+    outline: none;
+    border-color:#FFEBC1;
+}
+.loginJoinBTN{
+    font-size: 1.4rem;
+    font-weight: 700;
+    border:solid 4.6px black;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top:15px;
+}
+.loginJoinBTN:hover{
+    background-color: yellowgreen;
+}
+
+/* login.css */
+#login{
+    flex:1;
+    margin-top:5px;
+    margin-left: 7%;
+}
+#loginCancel:hover{
+    background-color: tomato;
+
+}
+/* loginFooterContainer */
+#loginFooterContainer{
+    margin-top:15px;
+}
+
+#loginFooterContainer a{
+    font-weight: 600;
+    
+}
+#loginFooterBTNLine::after, #loginFooterBTNLine::before{
+    content: ".";
+    color:rgba(0,0,0,0.0);
+   background-color:rgba(0,0,0,0.3);
+   margin:0 10px 0 10px;
+}
+
+#loginFooterContainer a:hover{
+    color: #D7A86E;
+}
+
+/* join */
+#join{
+    flex:1.5;
+    background-color:  #D7A86E;
+    /* border:solid 5px black; */
+    box-sizing: border-box;
+    box-shadow: 0 0 10px 5px black;
+    margin-right: 7%;
+}
+.joinInputStyle{
+    background-color: #D7A86E;
+}
+#joinBTN{
+    margin-top: 7.5px;
+}
+
+@media screen and (max-width:768px) {
+    #loginJoinContainer{
+        flex-direction: column;
+    }
+    #loginFooterContainer{
+        margin-bottom: 15px;
+    }
+    #login{
+        margin-right: 7%;
+    }
+    #join{
+        margin-left:7%;
+    }
+    
+}

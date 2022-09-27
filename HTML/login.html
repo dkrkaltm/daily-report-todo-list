@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/loginJoin/loginJoin.css">
+</head>
+<body>
+    <header id="dailyReportToDoListTitle">
+        <h1  onclick="location.href='main.html'" id="DRLTTitle">LOGIN/JOIN</h1>
+    </header>
+    <nav id="menuSelect">
+        <h2 class="hidden">menuSelect</h1>
+        <a href="main.html"class="menuStyle"onclick="#" id="menuHOME">HOME</a>
+        <a href=""class="menuStyle"onclick="#" id="menuExamine">EXAMINE</a>
+        
+    </nav>
+    <main id="loginJoinContainer">
+      <section  id="login">
+            <h2 class="loginJoinTitleStyle">Login</h2>  
+            <form class="loginJoinContainerStyle" id="loginContainer" action="" method="get">
+                <input class="loginJoinStyleInput" id="loginID"type="text" placeholder="아이디입력" >
+                <input class="loginJoinStyleInput"  id="loginPW" type="password"
+                placeholder="비밀번호입력">
+                <button class="loginJoinBTN" type="submit">입력</button>
+                <button class="loginJoinBTN" id="loginCancel" type="button">취소</button>
+            </form>
+            <footer id="loginFooterContainer">
+                <a href="#">아이디찾기</a>
+                <a id="loginFooterBTNLine" href="#">비번찾기</a>
+                <a href="#">회원가입</a>
+            </footer>
+     </section>
+     <section id="join">
+        <h2 class="loginJoinTitleStyle">Join</h2>  
+            <form class="loginJoinContainerStyle" id="joinContainer" action="" method="">
+                <input class="loginJoinStyleInput joinInputStyle" type="text" placeholder="아이디입력">
+                <input class="loginJoinStyleInput joinInputStyle" type="text" placeholder="비밀번호입력">
+                <input class="loginJoinStyleInput joinInputStyle" type="text" placeholder="비밀번호확인">
+                <button class="loginJoinBTN" id="joinBTN" type="submit">가입</button>
+            </form>
+     </section>
+    </main>
+    </body>
+</html>

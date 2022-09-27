@@ -1,0 +1,93 @@
+
+#viewSelect{
+    display: flex;
+}
+#viewSelect li{
+    margin-right: 15px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+#viewSelect li:hover{
+    color:#FFEBC1;
+}
+#viewImf{
+    display: flex;
+    flex-direction: column;
+    margin-top:15px;
+    cursor: pointer;
+
+}
+#viewImf li{
+    display: flex;
+    border:solid 3px black;
+    border-radius: 15px;
+    height:25px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom:6.5px;
+    overflow: hidden;
+    align-items: center;
+    transition: 0.2s ease-in;
+}
+#viewImf li:hover{
+   border-color: #FFEBC1;
+   background-color: #FFEBC1;
+}
+.viewImfNav{
+    flex:1;
+    margin-left:15px;   
+}
+.viewImfTitle{
+    flex:2;
+}
+
+#contentInputSelect{
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+#contentInput select{
+    width:56px;
+    height:30px;
+    font-weight: bold;
+    margin-left:6px;
+
+    border: solid 1px black;
+  
+}
+#contentInputImf{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+#contentInputImf label{
+    margin-top:6px;
+}
+.contentInputImfStlye{
+    height:35px;
+    font-size: 1.3rem;
+
+    border:none;
+    border-top:solid 2px black;
+    border-bottom: solid 2px black;
+}
+
+
+#contentInputImf textarea{
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+#contentInputImfSubmit{
+    font-weight: bold;
+    font-size: 1.3rem;
+    height:80px;
+    transition: 0.3s ease-in-out;
+}
+#contentInputImfSubmit:hover{
+    background-color: greenyellow;
+}
+

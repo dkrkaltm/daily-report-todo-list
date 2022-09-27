@@ -1,0 +1,37 @@
+@import "reset.css";
+@import "headerNav.css";
+/* @import "content/content.css"; */
+
+/* 
+    ---color---
+    backgroud-color:#A64B2A
+    nav-hover: #D7A86E
+    Shover: #FFEBC1
+*/
+/* 
+   ---interval--
+    explanation
+   
+    ---viewSelect--
+        font-size:1.3rem
+        font-weight:600; 
+*/
+
+
+
+body{
+    background-color:#A64B2A;
+    width:100%;
+    height: 100%;
+}
+
+.hidden{
+    display: none;
+}
+.explanation{
+    margin-bottom: 3px;
+    font-size: 1.5rem;  
+    font-weight: 600;
+}
+
+

@@ -1,0 +1,58 @@
+@import "timerProgressContainer.css";
+@import "viewContentInputContainer.css";
+
+/* MAIN */
+#content{
+    display: flex;
+    height: 70vh;
+    flex-direction: column;
+    border:solid 5px black;
+    margin: 15px 15% 0 15%;
+
+    background-color:  #D7A86E;
+}
+
+/* ViewContentInput */
+#viewContentInputContainer{
+    display: flex;
+    flex:2;
+}
+#viewContainer{
+    flex:2;
+    border-right: solid 3.5px black;
+}
+#contentInput{
+    flex:1;
+}
+
+
+@media screen and (max-width:1200px){
+    #body{
+        overflow: scroll;
+    }
+    #content{
+        margin: 15px 0 0 0;
+        height: 100%;
+    }
+    #timerProgressContainer{
+        flex-direction: column;
+       
+    }
+    #timer{
+        border-right: 0;
+        border-bottom: solid 3.5px black;
+    
+    }
+    #viewContentInputContainer{
+        flex-direction: column;
+      
+    }
+    #viewContainer{
+        border-right: 0;
+        border-bottom: solid 3.5px black;
+   
+    }
+    #viewImf li{
+        height:37px;
+    }
+}

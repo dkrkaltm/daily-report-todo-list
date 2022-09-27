@@ -1,0 +1,32 @@
+
+
+
+/* HEADER */
+header{
+    display: flex;
+    justify-content: center;
+    margin-top:4%;
+    cursor: pointer;
+}
+
+#DRLTTitle{
+    font-size: 4.3rem;
+    font-weight: bolder;
+}
+
+/* NAV */
+#menuSelect{
+    display: flex;
+    justify-content:flex-end;
+    margin:50px 14% 0 0 ;
+}
+.menuStyle{
+   margin-right: 2%;
+   font-size:1.3rem;
+   font-weight: 600;
+   cursor:pointer;
+   transition: 0.3s ease-in-out;
+}
+.menuStyle:hover{
+    color: #D7A86E;
+}

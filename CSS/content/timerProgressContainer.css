@@ -1,0 +1,82 @@
+/* timerProgressContainer */
+#timerProgressContainer{
+    display: flex;
+    border-bottom: solid 3.5px black;
+    flex:1;
+
+}
+#timer{
+    /* SHAPE */
+    border-right: solid 3.5px black;
+    flex:2;
+    /* innerElement */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.timerStyle{
+    display: flex;
+    flex-direction: column;
+}
+/* timerLeft */
+#timerLeft{
+    margin-right: 150px;
+}
+#timerProgress{
+    font-size: 3.5rem;
+}
+/* timerRight */
+#timerRight span{
+    font-size: 1.8rem;
+}
+#timerNow{
+    margin-bottom: 35px;
+}
+
+/* progress */
+#progress{
+    flex:1;
+}
+#progress dl{
+    margin-top:32px;
+}
+.progressContainer{
+    margin:15px;
+}
+#progressRod{
+    height: 30px;
+    border: solid 3px black;
+}
+#progressButton{
+    display: flex;
+    justify-content:center;
+    border:solid 2px black
+}
+#progressButton li{
+    flex:1;
+    padding:30px;
+    text-align: center;
+    font-weight: 600;
+    cursor:pointer;
+    border-right: solid 2px black;
+}
+
+#progressButton>li:nth-child(1){
+    background-color: greenyellow;
+}
+#progressButton>li:nth-child(2){
+    background-color: #FFEBC1;
+}
+#progressButton>li:nth-child(3){
+    background-color: tomato;
+} 
+
+#progressButton>li:nth-child(1):hover{
+    background-color: green;
+}
+#progressButton>li:nth-child(2):hover{
+    background-color: brown;
+}
+#progressButton>li:nth-child(3):hover{
+    background-color: red;
+}

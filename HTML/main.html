@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/style.css">
+    <link rel="stylesheet" href="../CSS/content/content.css">
+    <script src="../JS/content.js" defer></script>
+    <title>DailyReportToDoList</title>
+</head>
+<body>
+    <header id="dailyReportToDoListTitle">
+        <h1 onclick="location.href='main.html'" id="DRLTTitle">DailyReportToDoList</h1>
+    </header>
+    <nav id="menuSelect">
+        <h2 class="hidden">menuSelect</h1>
+            <a  class="menuStyle" id="menuSLogin" href="login.html" >LOGIN/JOIN</a>
+        <a class="menuStyle" href="" id="menuExamine">EXAMINE</a>
+    </nav>
+    <main id="content">
+        <section id="timerProgressContainer">
+            <h2 class="hidden">timerProgressContainer</h2>
+            <article id="timer">
+                <div class="timerStyle" id="timerLeft">
+                    <label class="explanation" for="timerProgress">진행</label>
+                    <span id="timerProgress">00:00:00</span>
+                </div>
+                <div class="timerStyle" id="timerRight">
+                    <label class="explanation" for="timerNow">현재시간</label>
+                    <span id="timerNow">00:00:00</span>
+                    <label class="explanation" for="timerEnd">종료시간</label>
+                    <span id="timerEnd">00:00:00</span>
+                </div>
+            </article>
+            <article id="progress">
+                <dl class="progressContainer">
+                    <dt class="explanation">진행도</dt>
+                    <dd id="progressRod"></dd>
+                </dl>
+                <ol class="progressContainer" id="progressButton">
+                  <li onclick="#" id="progressStart">START</li>
+                  <li onclick="#" id="progreesResume">RESUME</li>   
+                  <li onclick="#" id="progressStop">STOP</li>
+                </ol>
+            </article>
+        </section>
+        <section id="viewContentInputContainer">
+            <h2 class="hidden">viewContentInputContainer</h2>
+            <article id="viewContainer">
+                <ol id="viewSelect">
+                    <li>전체보기</li>
+                    <li>오늘</li>
+                    <li>오전</li>
+                    <li>오후</li>
+                </ol>
+                <div id="view">
+                    <ol id="viewImf">
+                        <li>
+                            <div class="viewImfNav">
+                                <span>반복</span>
+                                <span>오늘</span>
+                                <span>00:00:00</span>
+                            </div>
+                            <div class="viewImfTitle">
+                                <span>영어공부하긱</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="viewImfNav">
+                                <span>반복</span>
+                                <span>오늘</span>
+                                <span>00:00:00</span>
+                            </div>
+                            <div class="viewImfTitle">
+                                <span>영어 lc 공부하기</span>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </article>
+            <article id="contentInput">
+                <form action="">
+                    <div id="contentInputSelect">
+                        <label for="contentInputRepeat">반복</label>
+                        <input id="contentInputRepeat" style='zoom:1.4;' type="checkbox" name="xxx" value="yyy">
+               
+                        <select  name="Time" id="">
+                            <option value="" select>Time</option>
+                            <option value="">오늘</option>
+                            <option value="">오전</option>
+                            <option value="">오후</option>
+                        </select>
+                        <select  name="Hour" id="Hour">
+                            <option value="Hour" selected>Hour</option>
+                        </select>
+                        <select   name="Minute" id="Minute">
+                            <option value="Minute" selected>Minute</option>
+                        </select>
+                        <select   name="Second" id="Second">
+                            <option value="Second" selected>Second</option>
+                        </select>
+                    
+                    </div>
+                    <div id="contentInputImf">      
+                        <label for="contentInputWork">할일</label>
+                        <input class="contentInputImfStlye" id="contentInputWork" type="text" placeholder="할일" required>
+                        <label for="contentInputTarget">목표</label>
+                        <input class="contentInputImfStlye" id="contentInputTarget" type="text"  placeholder="목표" required>
+                        <label for="contentInputWay">방식</label>
+                        <textarea  placeholder="방식" name="" id="contentInputWay" cols="30" rows="7" ></textarea>
+                        <button id="contentInputImfSubmit" type="submit">등록</button>
+                    </div>
+                </form>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
