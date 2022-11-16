@@ -1,8 +1,8 @@
 /* loginJoinContainer */
 #loginJoinContainer{
     display: flex;
-    height: 70vh;
-    margin-top: 15px;
+    height: 60vh;
+    margin-top: 35px;
     text-align: center;
 }
 
@@ -11,7 +11,7 @@
 .loginJoinTitleStyle{
     font-size: 3.5rem;
     font-weight: bolder;
-    margin: 25px 0 67px 0;
+    margin: 25px 0 55px 0;
 }
 .loginJoinContainerStyle{
     display: flex;
@@ -54,7 +54,6 @@
 }
 #loginCancel:hover{
     background-color: tomato;
-
 }
 /* loginFooterContainer */
 #loginFooterContainer{
@@ -68,8 +67,8 @@
 #loginFooterBTNLine::after, #loginFooterBTNLine::before{
     content: ".";
     color:rgba(0,0,0,0.0);
-   background-color:rgba(0,0,0,0.3);
-   margin:0 10px 0 10px;
+    background-color:rgba(0,0,0,0.3);
+    margin:0 10px 0 10px;
 }
 
 #loginFooterContainer a:hover{

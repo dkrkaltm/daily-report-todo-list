@@ -49,16 +49,16 @@
             <h2 class="hidden">viewContentInputContainer</h2>
             <article id="viewContainer">
                 <ol id="viewSelect">
-                    <li>전체보기</li>
+                    <li id="viewAll">전체보기</li>
                     <li>오늘</li>
                     <li>오전</li>
                     <li>오후</li>
                 </ol>
                 <div id="view">
-                    <ol id="viewImf">
-                        <li>
+                    <ol class="viewImf" id="viewToday">
+                        <li onclick ="a(0)">
                             <div class="viewImfNav">
-                                <span>반복</span>
+                                <span id="viewImfNavRepeat">반복</span>
                                 <span>오늘</span>
                                 <span>00:00:00</span>
                             </div>
@@ -66,10 +66,13 @@
                                 <span>영어공부하긱</span>
                             </div>
                         </li>
-                        <li>
+                      
+                    </ol>
+                    <ol class="viewImf" id="viewMorning">
+                        <li onclick ="a(1)">
                             <div class="viewImfNav">
-                                <span>반복</span>
-                                <span>오늘</span>
+                                <span id="viewImfNavRepeat">반복</span>
+                                <span>오전</span>
                                 <span>00:00:00</span>
                             </div>
                             <div class="viewImfTitle">
@@ -77,19 +80,31 @@
                             </div>
                         </li>
                     </ol>
+                    <ol class="viewImf" id="viewAfternoon">
+                        <li onclick ="a(2)">
+                            <div class="viewImfNav">
+                                <span id="viewImfNavRepeat">반복</span>
+                                <span>오후</span>
+                                <span>00:00:00</span>
+                            </div>
+                            <div class="viewImfTitle">
+                                <span>영어공부하긱</span>
+                            </div>
+                        </li>
+                      
+                    </ol>
                 </div>
             </article>
             <article id="contentInput">
-                <form action="">
+                <form action="" method="get" id="contentInputForm">
                     <div id="contentInputSelect">
                         <label for="contentInputRepeat">반복</label>
-                        <input id="contentInputRepeat" style='zoom:1.4;' type="checkbox" name="xxx" value="yyy">
-               
-                        <select  name="Time" id="">
-                            <option value="" select>Time</option>
-                            <option value="">오늘</option>
-                            <option value="">오전</option>
-                            <option value="">오후</option>
+                        <input id="contentInputRepeat" style='zoom:1.4;' type="checkbox" name="xxx" value="yyy"/>
+                        <select  name="Date" id="Date">
+                            <option value="Time" >Time</option>
+                            <option value="오늘">오늘</option>
+                            <option value="오전">오전</option>
+                            <option value="오후" select>오후</option>
                         </select>
                         <select  name="Hour" id="Hour">
                             <option value="Hour" selected>Hour</option>
@@ -104,11 +119,13 @@
                     </div>
                     <div id="contentInputImf">      
                         <label for="contentInputWork">할일</label>
-                        <input class="contentInputImfStlye" id="contentInputWork" type="text" placeholder="할일" required>
+                        <input class="contentInputImfStlye" id="contentInputWork"  type="text" placeholder="할일"  required />
+                       
                         <label for="contentInputTarget">목표</label>
-                        <input class="contentInputImfStlye" id="contentInputTarget" type="text"  placeholder="목표" required>
+                        <input class="contentInputImfStlye" id="contentInputTarget" type="text"  placeholder="목표"   required />
+                       
                         <label for="contentInputWay">방식</label>
-                        <textarea  placeholder="방식" name="" id="contentInputWay" cols="30" rows="7" ></textarea>
+                        <textarea  placeholder="방식" name="" id="contentInputWay" cols="30" rows="7"   ></textarea>
                         <button id="contentInputImfSubmit" type="submit">등록</button>
                     </div>
                 </form>

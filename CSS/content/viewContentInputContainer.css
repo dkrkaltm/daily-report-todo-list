@@ -1,6 +1,7 @@
 
 #viewSelect{
     display: flex;
+    margin-bottom: 15px;
 }
 #viewSelect li{
     margin-right: 15px;
@@ -12,14 +13,20 @@
 #viewSelect li:hover{
     color:#FFEBC1;
 }
-#viewImf{
+#viewAll{
+    color:#FFEBC1;
+}
+
+#view{
+    overflow-y: auto;
+    height:85%;
+}
+.viewImf{
     display: flex;
     flex-direction: column;
-    margin-top:15px;
     cursor: pointer;
-
 }
-#viewImf li{
+.viewImf li{
     display: flex;
     border:solid 3px black;
     border-radius: 15px;
@@ -30,8 +37,9 @@
     overflow: hidden;
     align-items: center;
     transition: 0.2s ease-in;
+    overflow: auto;
 }
-#viewImf li:hover{
+.viewImf li:hover{
    border-color: #FFEBC1;
    background-color: #FFEBC1;
 }
@@ -39,10 +47,14 @@
     flex:1;
     margin-left:15px;   
 }
+#viewImfNavRepeat{
+    color: rgba(0,0,0,0.7);
+}
 .viewImfTitle{
     flex:2;
 }
 
+/* contentInput */
 #contentInputSelect{
   display: flex;
   align-items: center;

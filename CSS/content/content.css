@@ -15,7 +15,7 @@
 /* ViewContentInput */
 #viewContentInputContainer{
     display: flex;
-    flex:2;
+    overflow: hidden;
 }
 #viewContainer{
     flex:2;

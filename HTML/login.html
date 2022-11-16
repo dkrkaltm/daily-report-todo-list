@@ -7,6 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/loginJoin/loginJoin.css">
+    <script defer src="../JS/login.js"></script>
 </head>
 <body>
     <header id="dailyReportToDoListTitle">
@@ -37,9 +38,11 @@
      <section id="join">
         <h2 class="loginJoinTitleStyle">Join</h2>  
             <form class="loginJoinContainerStyle" id="joinContainer" action="" method="">
-                <input class="loginJoinStyleInput joinInputStyle" type="text" placeholder="아이디입력">
-                <input class="loginJoinStyleInput joinInputStyle" type="text" placeholder="비밀번호입력">
-                <input class="loginJoinStyleInput joinInputStyle" type="text" placeholder="비밀번호확인">
+                <input class="loginJoinStyleInput joinInputStyle" type="text" id="joinId" placeholder="*아이디입력">
+                <input class="loginJoinStyleInput joinInputStyle" type="pw" id="joinPw" placeholder="*비밀번호입력">
+                <input class="loginJoinStyleInput joinInputStyle" type="pw" id="joinPwC" placeholder="*비밀번호확인">
+                <input class="loginJoinStyleInput joinInputStyle" type="tel" id="joinCellphone" placeholder="핸드폰번호">
+                <input class="loginJoinStyleInput joinInputStyle" type="email" id="joinEmail" placeholder="이메일">
                 <button class="loginJoinBTN" id="joinBTN" type="submit">가입</button>
             </form>
      </section>
