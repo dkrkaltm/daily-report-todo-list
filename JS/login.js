@@ -1,21 +1,29 @@
+const data = (function(){
 
-// 선택된 요소 찾기
-document.querySelector('#joinContainer').onclick = (e) =>{
-    console.log(e.target.id);
+    let id ='';  
 
-    //join키워드를 뺸 뒤 부분
-    let id = (e.target.id).slice(4,(e.target.id).length);
-    let value = e.target.value;
-    e.target.onblur = () =>{
-                //소문자로 만들기
-                id =(id.toLowerCase()).concat('Test');
-                Pattern[id](value);
-    };
+    return{
+        validation(e){
+            id = ((e.id).slice(4,(e.id).length).toLowerCase()).concat('Test');
+            // element, id, value;
+            Pattern[id](e);
+        },
+        correct(e){
+            console.log('a',e);
+            e.style.borderBottom = 'solid 4.6px yellowgreen';
+             
+        },
+        wrong(e){
 
-}
+        }
+    }
+
+
+}());
+
+
 
 const Pattern =  new class{
-    
     // 클래스필스 
     // 프로퍼티 pattern
     // /^(시작)[조건]{길이}$(끝)/   검사
@@ -29,26 +37,60 @@ const Pattern =  new class{
     #cellphone = /^\d{3}-\d{3,4}-\d{4}$/;
     //email
     #email =/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  
+    
+    
     constructor(){
     }
-    idTest(v){
-        
+    idTest(e){
+        alert('작동');
+        this.#id.test(e.value) ? data.correct(e) : data.wrong(e);
     }
-    pwTest(v){
-    
+    pwTest(e){
+        this.#pw.test(e.value) ? data.correct(e) : data.wrong(e);
     }
-    pwcTest(v){
+    pwcTest(e){
         //pw 가 조건이 맞으면 pwc에 저장 => pwc 데이와 확인
+
     }
-    cellphoneTest(v){
+    cellphoneTest(e){
+        this.#id.text(e.value) ? data.correct(e) : data.wrong(e);
       
     }
-    emailTest(v){
+    emailTest(e){
+        this.#id.text(e.value) ? data.correct(e) : data.wrong(e);
     }
 
 };
 
-function testResult(){
+// const Data = (function(){
 
-}
+//     const cData ={};
+//     const wData ={};
+
+//     return{
+//         correct(){
+
+//         },
+//         wrong(){
+
+//         }
+//     };
+
+// }());
+// 선택된 요소 찾기
+document.querySelector('#joinContainer').onclick = (e) =>{
+    console.log(e.target.id);
+
+    //가공
+   
+    e.target.onblur = () =>{
+        //소문자로 만들기
+
+        data.validation(e.target);
+        // id =(id.toLowerCase()).concat('Test');
+        // Pattern[id](value);
+    };
+
+
+};
+

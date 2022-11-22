@@ -1,36 +1,41 @@
 /* loginJoinContainer */
 #loginJoinContainer{
     display: flex;
-    height: 60vh;
+    height: 70vh;
     margin-top: 35px;
     text-align: center;
 }
-
+.loginJoinLabelStyle{
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 13px;
+}
 
 /* loginJoinStyle */
 .loginJoinTitleStyle{
     font-size: 3.5rem;
     font-weight: bolder;
-    margin: 25px 0 55px 0;
+    margin: 25px 0 45px 0;
 }
 .loginJoinContainerStyle{
     display: flex;
     flex-direction: column;
     margin:0 15% 0 15%;
 }
-.loginJoinStyleInput{
+.loginJoinInputStyle{
     border:none;
     background-color: #A64B2A;
     border-bottom: solid 4.6px black;
     margin-bottom: 25px;
     height: 35px;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: bold;
 }
-.loginJoinStyleInput::placeholder{
+.loginJoinInputStyle::placeholder{
     color: rgba(0,0,0,0.7);
 }
-.loginJoinStyleInput:focus{
+.loginJoinInputStyle:focus{
     outline: none;
     border-color:#FFEBC1;
 }
@@ -58,6 +63,7 @@
 /* loginFooterContainer */
 #loginFooterContainer{
     margin-top:15px;
+    
 }
 
 #loginFooterContainer a{
@@ -88,7 +94,7 @@
     background-color: #D7A86E;
 }
 #joinBTN{
-    margin-top: 7.5px;
+    margin-top: 1.5px;
 }
 
 @media screen and (max-width:768px) {
