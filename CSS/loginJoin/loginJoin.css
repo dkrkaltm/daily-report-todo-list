@@ -8,7 +8,7 @@
 .loginJoinLabelStyle{
     text-align: left;
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     margin-bottom: 13px;
 }
 
@@ -45,7 +45,6 @@
     border:solid 4.6px black;
     border-radius: 30px;
     cursor: pointer;
-    margin-top:15px;
 }
 .loginJoinBTN:hover{
     background-color: yellowgreen;

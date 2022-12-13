@@ -1,42 +1,32 @@
 
 
+const dateProcess = (function(){
+    //들어갈 공간을 결정-> 분류
+    // date 오늘:viewToday 오전:viewMorning 오후:viewAfternoon
+    
+    let dateM = new Map([['오늘','viewToday'],['오전','viewMorning'],['오후','viewAfternoon']]);
+    let subdivisionM = new Map([['오늘','viewTodayImf'],['오전','viewMorningImf'],['오후','viewAfternoonImf']])
+    return{
+        spaceClassification(date){
+            // map 사용 법
+        
+            if(date.options[date.selectedIndex].value === 'Time' ){
+                return ['오늘', dateM.get('오늘') , subdivisionM.get('오늘')];
+            }
+            return [date.options[date.selectedIndex].value,dateM.get(date.options[date.selectedIndex].value),subdivisionM.get(date.options[date.selectedIndex].value)];
+          
+        }
+    }
+
+}());
 
 
+const timeProcess = (function(){
 
-// submitData
-document.querySelector('#contentInputForm').onsubmit = e => {
-    e.preventDefault();
- // Repeat, Date, Hour, Minute, Second, Work, Target, Way
-    let Data = contentDate.getContentImf();
-   
- // Data Validation
-   dataValidation(Data);
-
- // Data classification
-   dataClassification.setData(Data.date,Data);
-   dataClassification.getData();
-}; 
-
-//저장을 위한 데이터는 변경하지 않는다
- const contentDate = (function(){
-
-    // 반복 
-    let Repeat =  document.querySelector('#contentInputRepeat');
-    // 요일
-    let Date =  document.querySelector('#Date');
-    // selectTime
-    let Hour = document.querySelector('#Hour');
-    let Minute =document.querySelector('#Minute');
-    let Second = document.querySelector('#Second');
-    //do
-    let Work = document.querySelector('#contentInputWork');
-    //target
-    let Target = document.querySelector('#contentInputTarget');
-    //way
-    let Way = document.querySelector('#contentInputWay'); 
-    //selectTimeOption  
     let time = new Array(60).fill(0);
+    let timePattern = /^\d+$/;
 
+    //space input
     time.forEach((i, index,arr) =>{
         if(index<9){
             arr[index] = `<option value="${index+1}">0${index+1}</option>`;    
@@ -45,176 +35,252 @@ document.querySelector('#contentInputForm').onsubmit = e => {
         }
     });
 
-    Hour.innerHTML +=time;
-    Minute.innerHTML +=time;
-    Second.innerHTML +=time;
-
     return {
-        // Repeat, Date, Hour, Minute, Second, Work, Target, Way
-      getContentImf(){
-            return  {
-                repeat:Repeat.checked,
-                date:Date.options[Date.selectedIndex].value,
-                hour:Hour.options[Hour.selectedIndex].value,
-                minute:Minute.options[Minute.selectedIndex].value,
-                second:Second.options[Second.selectedIndex].value,
-                work:Work.value,
-                target:Target.value,
-                way:Way.value,
-                  };  
-                },
-      setContentImf(){
-
-      },
-    };
-    
-    
-
- }());
-
- // validation
-function dataValidation(data){
-
-    if(data.date === 'Time' || data.date ==='오늘'){
-        data.date = '오늘';
-        data.separator = 'viewToday';
-        
-    }else{
-        //구분자 
-        data.separator = (data.date === '오전' ? 'viewMorning' : 'viewAfternoon');
-    }
-    if(data.hour === 'Hour'){
-        data.hour = '00';
-    }
-    if(data.minute === 'Minute'){
-        data.minute ='00';
-    }
-    if(data.second === 'Second'){
-        data.second = '00';
-    }
-
-}
- 
-const dataClassification =(function(){
-    
-    let num = [0,0,0,0];
-    let i =0;
-    let name = ['viewToday','viewMorning','viewAfternoon'];
-    let viewToday =[];
-    let viewMorning =[];
-    let viewAfternoon =[];
-    let viewTitle = '';
-    let viewColor ='';
-
-    return{
-        setData(date, Data){
-            console.log(Data.separator);
-            for(i = 0; i<3; i++){
-                if(name[i].search(Data.separator)){
-                    //데이터를 저장할 공간을 어떻게 구분할지   
-                    //2차원 배열로 date 만들기
-                    eval(name[i])[num[i]] = Data;
-                    console.log('c',eval(eval(name[i])[num[i]]), viewToday[i], viewMorning[i],viewAfternoon[i]);
-                     num[i]++;
-                     i = num[i];
-                     break;
-                }
-            }
-            if(Data.repeat){
-                viewColor ='black';
-            }
-            //viewTitle 어느 공간에 해당하는 가 
-            document.querySelector(`#${Data.separator}`).innerHTML+=`<li >
-            <div class="viewImfNav">
-                <span style="color:${viewColor}"id="viewImfNavRepeat">반복</span>
-                <span>${Data.date}</span>
-                <span>${Data.hour}:${Data.minute}:${Data.second}</span>
-            </div>
-            <div class="viewImfTitle">
-                <span>${Data.work}</span>
-            </div>
-        </li>`;
-
+        save(...e){
+                e.forEach((e) => e.innerHTML += time);
         },
-        getData(name='오늘', number=0){
-            
-        }
-    };
+       normal([...time]){ 
+                time.forEach( (e,i,arr) =>{
+                    // 시간이 숫자가 아닐 떄 00으로 초기화
+                    if(!timePattern.test(e.options[e.selectedIndex].value)){     
+                        time[i]= '00';  
+                    }else if(e.options[e.selectedIndex].value<10){
+                        
+                        time[i] = '0'+e.options[e.selectedIndex].value;  
+                    }else{
+                        time[i] = e.options[e.selectedIndex].value;  
+                    }
+                });
 
+                return time;
+               
+              
+        }
+    }
 }());
 
 
-document.querySelector('#viewSelect').onclick = (e) => {
-        // 색상이 비었는지 + 색상이 똑같은지
-        // 처음 전체보기를 눌렀을 떄 color는 빈 값으로 나온다 
-        // if e.target. 색상이 같으면 수행하지 않는다 
-        if(e.target.style.color !== 'rgb(255, 235, 193)'){
-                //view 선택에 따른 체인지
-                //viewSelect 색 변경
-                viewS.colorChange(e.target);
-                
-                //선택 영역변경
-                viewS.viewChange(e.target.textContent);
-                
-                }
-    };
 
 
-class ViewSelect{
-    #selectView = document.querySelectorAll('#viewSelect li');
-    #viewDate = document.querySelectorAll('#view ol');
-    #naemCheck = ['오늘','오전','오후','전체보기'];
-    #index =0;
-    colorChange(target){
-
-        // 자기 자신을 뺀 나머지 블랙
-        this.#selectView.forEach((i, index,arr) =>{
-            if( arr[index]!== target){
-                arr[index].style.color = 'black';
-
-            }else{
-                 target.style.color  = '#FFEBC1';
-            }
-        
-        });
-    }
-    viewChange(name){
-        // name과 변경 class 이름이 다름 
-        // findIndex 이름에 해당하는 index로 격차 해결 
-        // 그 위치의 인덱스를 찾고 그 인덱스를 제외하고 나머지 hidden
-        // hidden 중복
-        this.#index =this.#naemCheck.findIndex((item) => item === name);
-
-        this.#viewDate.forEach((i,index,arr) => {
-           
-            if(this.#index !== 3){ 
-                if(this.#index === index){
-                        arr[index].classList = 'viewImf';
-                }else{
-                    arr[index].classList ='hidden';
-                }
-            }else{
-                arr[index].classList = 'viewImf';
-            }
-
-        })
-
-
-    }
-}
-const viewS = new ViewSelect();
-
-
-
-
-document.querySelector('#view').onclick = (e) =>{
-    e.stopPropagation();
-    console.log(e.currentTarget);
+//입력 데이터
+const contentDate = new class{
+     #par = document.querySelector('#contentInputForm');
+    // 반복 
+     #Routine =  this.#par.querySelector('#contentInputRepeat');
+    // 요일
+     #Date =  this.#par.querySelector('#Date');
+    // selectTime
+     
+     #Hour = this.#par.querySelector('#Hour');
+     #Minute =this.#par.querySelector('#Minute');
+     #Second = this.#par.querySelector('#Second');
     
+
+     //do
+     #Work = this.#par.querySelector('#contentInputWork');
+    //target
+     #Target = this.#par.querySelector('#contentInputTarget');
+    //way
+     #Way = this.#par.querySelector('#contentInputWay'); 
+    //selectTimeOption  
+
+        constructor(){
+            timeProcess.save(this.#Hour,this.#Minute, this.#Second);
+        }
+        
+        // Repeat, Date, Hour, Minute, Second, Work, Target, Way
+       getRoutineCheck(){
+         return this.#Routine.checked;
+       }
+
+        getDate(){
+            return this.#Date;
+        }
+        getTime(){
+            return [this.#Hour,this.#Minute, this.#Second];
+        }
+        getContentsValue(){
+            return [this.#Work.value,this.#Target.value,this.#Way.value];
+        }
+ 
+        
+    
+ };
+
+//  // 변경된 값을 다루기 위함
+// const processingdata = (function(){
+//     let repeat ='';
+//     let date = '';
+//     let hour = 0;
+//     let minute =0;
+//     let second = 0;
+//     let work = '';
+//     let target = '';
+//     let way = '';
+
+//     return{
+//         getTimeData(){
+
+//         },
+//         setTimeData(){
+
+//         }
+//     }
+// }());
+
+const view = new class{
+
+    #todayChild = document.getElementsByClassName('viewTodayImf');
+    #morningChild = document.getElementsByClassName('viewMorningImf');
+    #afternoonChild = document.getElementsByClassName('viewAfternoonImf');
+    todayli = document.querySelectorAll('.viewImf .viewTodayImf');
+    morli = document.querySelectorAll('.viewMorningImf');
+    afterli = document.querySelectorAll('.viewAfternoonImf');
+    ranges = new Map([['오늘',0],['오전',0],['오후',0]]);   
+    i=0;
+    // range
+    // 시작과 끝을 가져야지 않나
+    
+    constructor(e){
+        this.#todayChild.onclick =(e) => {console.log(e.target)} ;
+        this.#morningChild.onclick = (e) => console.log(e.target) ;
+        this.#afternoonChild.onclick = (e) => console.log(e.target) ;
+        document.getElementsByClassName('viewMorningImf').onclick =(e) => {console.log(e.target)};
+    }
+
+    range(){
+        this.todayli = document.querySelectorAll('.viewImf .viewTodayImf');
+        this.morli = document.querySelectorAll('.viewImf .viewMorningImf');
+        this.afterli = document.querySelectorAll('.viewAfternoonImf');
+        console.log('a',this.todayli,this.morli,this.afterli);
+    }
+    space(data){
+        document.querySelector(`#${data.category}`).innerHTML+=
+        `<li class=${data.subdivision}>
+        <div class="viewImfNav">
+            <span id=${data.routine === true ? 'viewImfNavRoutineT':'viewImfNavRoutineF'}>루틴</span>
+            <span>${data.date}</span>
+            <span>${data.hour}:${data.minute}:${data.second}</span>
+        </div>
+        <div class="viewImfTitle">
+            <span>${data.work}</span>
+            <span style="display:none;">${data.target}</span>
+            <span style="display:none;">${data.way}</span>
+        
+        </div>
+        </li>`;
+    }
+
 }
-
-function a(b){
-    alert(b);
-}
+    
 
 
+
+
+const processingData ={
+    routine:'',
+    category:'',
+    subdivision:'',
+    date : '',
+    hour: 0,
+    minute: 0,
+    second : 0,
+    work : '',
+    target : '',
+    way : '',
+};
+
+// document.querySelector('#view').onclick = (e) => {
+    
+//     console.log('e',e.target,e.currentTarget);
+// };
+
+
+
+// function r(e){
+
+//     console.log('e',e,arguments);
+
+//     e.onclick = () =>{
+//         alert("됐으면 좋겠어");
+//         console.log(e);
+//     }
+
+// }
+
+// const r2 = (function(){
+//         let i =0;
+//         let Par;
+//         return{
+//             registration(){
+//                 Par = document.querySelectorAll('.viewImf li');
+//                 for(;i<Par.length;i++){
+//                     console.log('p',Par);
+//                     r(Par[i]);
+//                 }
+            
+//             },
+//             load(e){
+//                 console.log(e);
+//                 e.onclick = () =>{
+//                     alert('됀다');
+//                     console.log(e);
+//                 }
+//             }
+//         }
+
+
+// }());
+
+
+
+let i =0;
+ // submitData
+document.querySelector('#contentInputForm').onsubmit = (e) => {
+    e.preventDefault();
+    
+   
+    // 부모 -> 안에 있는 모든 요소 선택
+    // Repeat, Date, Hour, Minute, Second, Work, Target, Way
+     processingData.routine=contentDate.getRoutineCheck();
+     console.log(processingData.routine === true ? 'viewImfNavRoutineT':'viewImfNavRoutineF');
+    // Date classification Dictionary
+    [processingData.date,processingData.category,processingData.subdivision] = dateProcess.spaceClassification(contentDate.getDate());
+
+     // Time processing  text -> 00 Dictionary
+    [processingData.hour,processingData.minute,processingData.second] = timeProcess.normal(contentDate.getTime());;
+    
+    // getContents 
+    [processingData.work,processingData.target,processingData.way] = contentDate.getContentsValue();
+
+    view.space(processingData);
+    // r2.registration();
+    
+    // console.log('par',par[0]);
+    // bubble
+   
+    // par.forEach((e)=>{
+    //     console.log(e);
+    //     e.onclick = () =>{
+            
+    //         console.log(e);
+    //     }
+
+    // });
+ 
+    // console.log('a',par.length);
+    let   Par = document.querySelectorAll('.viewImf li');
+    console.log('p',Par);
+    // for(;i<Par.length;i++){
+    //     console.log(Par[i], i);
+    //     r(Par[i]);
+    // }
+    
+    //   Par.forEach((e)=>{
+    //     console.log(e);
+    //         r(e);
+    //     });
+    view.range();
+    console.dir(view);
+    console.log(processingData);
+}; 

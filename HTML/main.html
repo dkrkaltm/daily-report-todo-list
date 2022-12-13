@@ -56,9 +56,9 @@
                 </ol>
                 <div id="view">
                     <ol class="viewImf" id="viewToday">
-                        <li onclick ="a(0)">
+                        <li  class= 'viewTodayImf'>
                             <div class="viewImfNav">
-                                <span id="viewImfNavRepeat">반복</span>
+                                <span id="viewImfNavRoutineF">반복</span>
                                 <span>오늘</span>
                                 <span>00:00:00</span>
                             </div>
@@ -66,12 +66,11 @@
                                 <span>영어공부하긱</span>
                             </div>
                         </li>
-                      
                     </ol>
                     <ol class="viewImf" id="viewMorning">
-                        <li onclick ="a(1)">
+                        <li class= 'viewMorningImf'>
                             <div class="viewImfNav">
-                                <span id="viewImfNavRepeat">반복</span>
+                                <span id="viewImfNavRoutineF">반복</span>
                                 <span>오전</span>
                                 <span>00:00:00</span>
                             </div>
@@ -81,9 +80,9 @@
                         </li>
                     </ol>
                     <ol class="viewImf" id="viewAfternoon">
-                        <li onclick ="a(2)">
+                        <li  class= 'viewAfternoonImf'>
                             <div class="viewImfNav">
-                                <span id="viewImfNavRepeat">반복</span>
+                                <span id="viewImfNavRoutineF">반복</span>
                                 <span>오후</span>
                                 <span>00:00:00</span>
                             </div>
@@ -98,20 +97,24 @@
             <article id="contentInput">
                 <form action="" method="get" id="contentInputForm">
                     <div id="contentInputSelect">
-                        <label for="contentInputRepeat">반복</label>
+                        <label for="contentInputRepeat">루틴</label>
                         <input id="contentInputRepeat" style='zoom:1.4;' type="checkbox" name="xxx" value="yyy"/>
+                      
                         <select  name="Date" id="Date">
                             <option value="Time" >Time</option>
                             <option value="오늘">오늘</option>
                             <option value="오전">오전</option>
                             <option value="오후" select>오후</option>
                         </select>
+                       
                         <select  name="Hour" id="Hour">
                             <option value="Hour" selected>Hour</option>
                         </select>
+                        
                         <select   name="Minute" id="Minute">
                             <option value="Minute" selected>Minute</option>
                         </select>
+                        
                         <select   name="Second" id="Second">
                             <option value="Second" selected>Second</option>
                         </select>
@@ -125,7 +128,7 @@
                         <input class="contentInputImfStlye" id="contentInputTarget" type="text"  placeholder="목표"   required />
                        
                         <label for="contentInputWay">방식</label>
-                        <textarea  placeholder="방식" name="" id="contentInputWay" cols="30" rows="7"   ></textarea>
+                        <textarea required placeholder="방식" name="" id="contentInputWay" cols="30" rows="7"></textarea>
                         <button id="contentInputImfSubmit" type="submit">등록</button>
                     </div>
                 </form>
