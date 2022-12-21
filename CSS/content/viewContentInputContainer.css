@@ -47,10 +47,10 @@
     flex:1;
     margin-left:15px;   
 }
-#viewImfNavRoutineF{
+.viewImfNavRoutineF{
     color: rgba(0,0,0,0.3);
 }
-#viewImfNavRoutineT{
+.viewImfNavRoutineT{
     color: black;
     font-weight: bold;
 }
@@ -95,7 +95,6 @@
 
 #contentInputImf textarea{
     font-size: 1.3rem;
-    font-weight: bold;
 }
 #contentInputImfSubmit{
     font-weight: bold;
