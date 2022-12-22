@@ -1,30 +1,5 @@
 
 
-// 데이터 이동을 위해
-const processingData ={
-    routine:'',
-    category:'',
-    subdivision:'',
-    date : '',
-    hour: 0,
-    minute: 0,
-    second : 0,
-    work : '',
-    target : '',
-    way : '',
-    classification(){
-        [this.date, this.category, this.subdivision] = dataProcess.spaceClassification(this.date);
-    },
-    digit(){
-     [this.hour,this.minute,this.second] = timeProcess.digit([this.hour,this.minute,this.second])
-    },
-    notDigit(){
-        [this.hour,this.minute,this.second] 
-        = timeProcess.notDigit([this.hour,this.minute,this.second]);
-    }
-};
-
-
 
 // 기본적인 데이터를 다루기 위한 편집
 const dataProcess = (function(){
@@ -35,9 +10,9 @@ const dataProcess = (function(){
    
     let subdivisionM = new Map([['오늘','viewTodayImf'],['오전','viewMorningImf'],['오후','viewAfternoonImf']]);
     let colorM = new Map([['select','#FFEBC1'],['cancel','#D7A86E']])
-
-
-
+    let selectM = '';
+    let keyM = []
+    
     return{
         spaceClassification(date){
             // map 사용 법
@@ -48,11 +23,31 @@ const dataProcess = (function(){
             return [date,dateCategoryM.get(date),subdivisionM.get(date)];
 
         },
+        checkSpaceClassification(input, select){
+            if(input.get(date) != select.get(date)){
+                // 다름 -> 원래요소 삭제, 다른 공간 할당
+            }
+        },
         colorChange(e,color){
             console.log(e);
             e.style.backgroundColor = colorM.get(color);
         },
+        mapValue(e){
+           return new Map([
+                ['category',e[0]],
+                ['subdivison',e[1]],
+                ['routine',e[2]],
+                ['date',e[3]],
+                ['hour',e[4]],
+                ['minute',e[5]],
+                ['second',e[6]],
+                ['work',e[7]],
+                ['target',e[8]],
+                ['way',e[9]]
+            ]);
 
+        },
+      
     }
 
 }());
@@ -80,7 +75,7 @@ const timeProcess = (function(){
         },
         // 자릿수 맞추기, 숫자가 아닐때 교환
        digit(time){ 
-       
+              
                 time.forEach( (e,i,arr) =>{
                     // 시간이 숫자가 아닐 떄 00으로 초기화
                     if(!timePattern.test(e)){     
@@ -91,7 +86,7 @@ const timeProcess = (function(){
                         time[i] = e;  
                     }
                 });
-                
+               
                 return time;
                 
         },
@@ -117,6 +112,28 @@ const buttonFct = new class{
     #Cancel = document.querySelector('#contentInputImfCancel');
     #Delete = document.querySelector('#contentInputImfDelete');
     
+    
+    constructor(){
+        // 등록
+        this.#Submit.onclick = (e) =>{
+            e.preventDefault();
+
+            inputData.dataEdit();
+
+            inputData.spaceSubmit();
+
+            inputData.formReset();
+        },
+        // 수정
+        this.#Correction.onclick = (e) => {
+            //inputData <-> selectData 비교 바꿈
+            inputData.setChangeData();
+
+            dataProcess.dataCompare();
+            
+        }
+    }
+
     setButton(name){
         this.#Submit.className = name === '' ? 'hidden' : '';
         this.#Correction.className = name;
@@ -149,42 +166,84 @@ const inputData = new class{
     #Category= '';
     #Subdivision= '';
 
+    // 변경을 위한 공간
+    #Chour; #Cminute; #Csecond;
+
+    //공간
+    #spaceCircuit;
+    
+    //inputMap
+    #inputM
+ 
         constructor(){
+            // 시간 선택 범위
             timeProcess.save(this.#Hour,this.#Minute, this.#Second);
         }
         
         // Repeat, Date, Hour, Minute, Second, Work, Target, Way
-        getDate(){
-            return this.#Date.value;
-        }
+     dataEdit(){
+            //자릿수 맞추기
+            [this.#Chour, this.#Cminute, this.#Csecond] = timeProcess.digit([this.#Hour.value,this.#Minute.value, this.#Second.value]);
+            
+            //공간 확보
+            [this.#Date.value, this.#Category, this.#Subdivision]=dataProcess.spaceClassification(this.#Date.value);
+       }
+    // view에 뿌림
+     spaceSubmit(){
+        document.querySelector(`#${this.#Category}`).innerHTML+= 
+        `<li class=${this.#Subdivision}>
+        <div class="viewImfNav">
+            <span class=${this.#Routine.checked ? 'viewImfNavRoutineT':'viewImfNavRoutineF'}>루틴</span>
+            <span name ='date' >${this.#Date.value}</span>
+            <span name = 'hour' >${this.#Chour}:${this.#Cminute}:${this.#Csecond}</span>
+        </div>
+        <div class="viewImfTitle">
+            <span name = 'work' >${this.#Work.value}</span>
+            <span name = 'target' style="display:none;">${this.#Target.value}</span>
+            <span name = 'way' style="display:none;">${this.#Way.value}</span>
+        </div>
+        </li>`;
 
-        getContentValue(e){
-            e.routine = this.#Routine.checked;
-            e.category= this.#Category;
-            e.subdivision = this.#Subdivision;
-            e.date = this.#Date.value;
-            e.hour = this.#Hour.value;
-            e.minute = this.#Minute.value;
-            e.second = this.#Second.value;
-            e.work = this.#Work.value;
-            e.target = this.#Target.value;
-            e.way= this.#Way.value;
-        }
-        setContentValue(e){
-            this.#Routine.checked = e.routine;
-            this.#Category = e.category;
-            this.#Subdivision = e.subdivision;
-            this.#Date.value = e.date;
-            this.#Hour.value = e.hour ;
-            this.#Minute.value = e.minute;
-            this.#Second.value = e.second ;
-            this.#Work.value = e.work;
-            this.#Target.value = e.target;
-            this.#Way.value = e.way;
-        }
-        formReset(){
-            this.#par.reset();
-        }
+        this.#spaceCircuit = document.querySelectorAll(`.${this.#Subdivision}`);
+        selectData.ranges(this.#spaceCircuit);
+    }
+    getDate(){
+        return this.#Date.value();
+    }
+    getChangeData(){
+        return this.#inputM;
+    }
+    setChangeData(){
+        // data 유형 맞추기
+        [this.#Date.value, this.#Category, this.#Subdivision]=dataProcess.spaceClassification(this.#Date.value);
+   
+        this.#inputM = new Map([
+            ['category',this.#Category],
+            ['subdivison',this.#Subdivision],
+            ['routine',this.#Routine.checked],
+            ['date',this.#Date.value],
+            ['hour',this.#Hour.value],
+            ['minute', this.#Minute.value],
+            ['second', this.#Second.value],
+            ['work',  this.#Work.value],
+            ['target',this.#Target.value],
+            ['way',this.this.#Way.value]
+        ]);
+    }
+    setElementData(e){
+        this.#Date.value = e.get('date');
+        this.#Hour.value = e.get('hour');
+        this.#Minute.value = e.get('minute');
+        this.#Second.value = e.get('second');
+        this.#Work.value = e.get('work');
+        this.#Target.value = e.get('target');
+        this.#Way.value = e.get('way');
+    }
+    formReset(){
+        this.#par.reset();
+    }
+
+        
  };
 
  const selectData = new class{
@@ -193,8 +252,44 @@ const inputData = new class{
     #changeCategory;
     #space;
     #check;
+    #selectM;
+    #hour; #minute; #second;
     constructor(){
     }
+       ranges(e){
+        // 클로저 아직 이해를 완전히 하지 못 함 
+        // onclick -> foreach의 렉시컬 환경을 참조함 
+        // forEach가 호출 될 때 마다 onclick도 생겨나며 그 onclick은 서로다른 forEach의 렉시컬 환경을 참조한다
+        // 2022.12.14
+        e.forEach( (e,i,arr) => {
+            e.onclick = (a) =>{
+                
+                this.setElement(e);
+                inputData.setElementData(this.getSelectData());
+                // 처음 선택 -> 아무것도 선택되지 않은 상황
+                // 자기 자신을 선택 -> 취소 -> 초기화
+       
+               if(e === this.#check){
+                    dataProcess.colorChange(e,'cancel');
+                    this.#check = '';
+                    buttonFct.setButton('hidden');
+                    inputData.formReset();
+                    return;
+                }
+                // 선택된 요소가 아닌 다른 요소를 선택
+                else if( this.#check != undefined && e != this.#check){
+                    dataProcess.colorChange(this.#check,'cancel');
+                }
+                
+                // 기본 요소 변경
+                dataProcess.colorChange(e,'select');
+              
+                this.#check = e;
+
+                buttonFct.setButton('');
+            };
+         });
+    }  
     setElement(e){
         this.#selectElement = e;
         this.#selectContent  = this.#selectElement.querySelectorAll('span');
@@ -206,190 +301,156 @@ const inputData = new class{
         this.#work  = this.#selectContent[3];
         this.#target = this.#selectContent[4];
         this.#way = this.#selectContent[5];
-    }  
+
+        [this.#hour, this.#minute,this.#second] = timeProcess.notDigit(this.#time.innerText.split(':'));
+        // data 유형 맞추기
+        this.#selectM = new Map([
+            ['category',this.#category.id],
+            ['subdivison',this.#subdivision],
+            ['routine',this.#routine.className.slice(this.#selectContent[0].className.length -1) === 'T'? true : false],
+            ['date',this.#date.innerText],
+            ['hour',this.#hour],
+            ['minute',this.#minute],
+            ['second',this.#second],
+            ['work',this.#work.innerText],
+            ['target',this.#target.innerText],
+            ['way',this.#way.innerText]
+        ]);
+       
+    }
+    getDate(){
+        return this.#date.innerText;
+    }
+    getSelectData(){
+        return this.#selectM;
+    }
+    setChangeData(){
+        //이동, 값 변경, 원래 있던 것 삭제
+        //1. 요소 삭제, 새로운 그릇, 변경 위치 -> element 위치가 변했는지 확인 
+    }
     setColorChange(color){
         dataProcess.colorChange(this.#selectElement, color);
     }
-    setContentValue(e){
-        this.#subdivision = e.subdivision;
-        //routineColor
-        this.#routine.className = e.routine ? 'viewImfNavRoutineT' : "viewImfNavRoutineF";
-        this.#date = e.date;
-        this.#time = [e.hour,e.minute,e.second].join(':');
-        this.#work  = e.work;
-        this.#target = e.target;
-        this.#way = e.way;
-    }
-    getContentValue(e){
-        // routineCheckbox
-        e.routine = this.#routine.className.slice(this.#selectContent[0].className.length -1) === 'T'? true : false;
-        e.category = this.#category.id;
-        e.subdivision = this.#subdivision.className;
-        e.date = this.#date.innerText;
-        [e.hour,e.minute,e.second] = this.#time.innerText.split(':');
-        // [e.hour,e.minute,e.second] = timeProcess.notDigit([e.hour,e.minute,e.second]);
-        e.work  = this.#work.innerText;
-        e.target = this.#target.innerText;
-        e.way = this.#way.innerText;
-    }
+    // setContentValue(e){
+    //     this.#changeCategory = e.category;
+    //     this.#subdivision = e.subdivision;
+    //     //routineColor
+    //     this.#routine.className = e.routine ? 'viewImfNavRoutineT' : "viewImfNavRoutineF";
+    //     this.#date.innerText = e.date;
+    //     this.#time.innerText = [e.hour,e.minute,e.second].join(':');
+    //     this.#work.innerText  = e.work;
+    //     this.#target.innerText = e.target;
+    //     this.#way.innerText = e.way;
+    // }
+    // getContentValue(e){
+    //     // routineCheckbox
+    //     e.routine = this.#routine.className.slice(this.#selectContent[0].className.length -1) === 'T'? true : false;
+    //     e.category = this.#category.id;
+    //     e.subdivision = this.#subdivision;
+    //     e.date = this.#date.innerText;
+    //     [e.hour,e.minute,e.second] = this.#time.innerText.split(':');
+    //     e.work  = this.#work.innerText;
+    //     e.target = this.#target.innerText;
+    //     e.way = this.#way.innerText;
+    // }
+    // getSubdivision(){
+    //     return this.#subdivision;
+    // }
+
     
   
 
 }
-const view = new class{
-    #space;
-    // #selectElement;
-    // #selectIndex;
-    #check = '';
-    // viewTodayImf = [];
-    // viewMorningImf = [];
-    // viewAfternoonImf = [];
-    #spaceCircuit;
-    #changeCategory;
+// const view = new class{
+//     #space;
+//     // #selectElement;
+//     // #selectIndex;
+//     #check = '';
+//     // viewTodayImf = [];
+//     // viewMorningImf = [];
+//     // viewAfternoonImf = [];
+//     #spaceCircuit;
+//     #changeCategory;
 
-    constructor(e){
-    }
+//     constructor(e){
+//     }
+//     // 클릭을 위해
+//     // submitDataSave(data){
+//     //      // a라는 공간에 할당 -> 저장 -> a 공간 초기화 -> 다시 new로 새로운 공간 할당
+//     //     this.#space = new SaveData(data);
+//     //     console.log(data);
+//     //      view[data.subdivision].push(this.#space);
+//     //     this.#space = '';
+//     // }
+
     
-    // view에 뿌림
-    spaceSubmit(data){
-         document.querySelector(`#${data.category}`).innerHTML+= 
-         `<li class=${data.subdivision}>
-         <div class="viewImfNav">
-             <span class=${data.routine ? 'viewImfNavRoutineT':'viewImfNavRoutineF'}>루틴</span>
-             <span>${data.date}</span>
-             <span>${data.hour}:${data.minute}:${data.second}</span>
-         </div>
-         <div class="viewImfTitle">
-             <span>${data.work}</span>
-             <span style="display:none;">${data.target}</span>
-             <span style="display:none;">${data.way}</span>
-         </div>
-         </li>`;
-        // 추가된 항목만 순회  
-        // 클릭 범위
-        this.#spaceCircuit = document.querySelectorAll(`.${data.subdivision}`);
-        this.ranges(this.#spaceCircuit);
-    }
-    // 클릭을 위해
-    // submitDataSave(data){
-    //      // a라는 공간에 할당 -> 저장 -> a 공간 초기화 -> 다시 new로 새로운 공간 할당
-    //     this.#space = new SaveData(data);
-    //     console.log(data);
-    //      view[data.subdivision].push(this.#space);
-    //     this.#space = '';
-    // }
-    ranges(e){
-        // 클로저 아직 이해를 완전히 하지 못 함 
-        // onclick -> foreach의 렉시컬 환경을 참조함 
-        // forEach가 호출 될 때 마다 onclick도 생겨나며 그 onclick은 서로다른 forEach의 렉시컬 환경을 참조한다
-        // 2022.12.14
-        e.forEach( (e,i,arr) => {
-            e.onclick = (a) =>{
-                // 처음 선택 -> 아무것도 선택되지 않은 상황
-                if( this.#check === ''){
-                    dataProcess.colorChange(e,'select');
-                    this.#check = e;
-                }
-                // 자기 자신을 선택 -> 취소 -> 초기화
-                else if(e === this.#check){
-                    dataProcess.colorChange(e,'cancel');
-                    this.#check = '';
-                    buttonFct.setButton('hidden');
-                    inputData.formReset();
-                    return;
-                }
-                // 선택된 요소가 아닌 다른 요소를 선택∫
-                else{
-                    dataProcess.colorChange(this.#check,'cancel');
-                    dataProcess.colorChange(e,'select');
-                    this.#check = e;
-                }
-
-                // button 요소 변경
-                buttonFct.setButton('');
-                
-                //선택 요소 저장
-                selectData.setElement(e);
-                
-                // 입력 창 채우기 
-                // select form -> select form  -> not
-                // 값의 이전
-                selectData.getContentValue(processingData);
-
-                //  select -> input -> 앞 0 제거
-                processingData.notDigit();
-
-                inputData.setContentValue(processingData);
-              
-            };
-         });
-    }  
-    cancelElement(){
-        dataProcess.colorChange(selectData.getElement(),'cancel');
-        this.#check = '';
-    }
-    deleteElement(){
-        console.log(selectData.getElement());
-        selectData.getElement().remove();       
+//     modify(){
+//         document.querySelector(`#${selectData.getElement.parentElement}`)
+//     }
+//     cancelElement(){
+//         selectData.setColorChange('cancel');
+//         this.#check = '';
+//     }
+//     deleteElement(){
+//         console.log(selectData.getElement());
+//         selectData.getElement().remove();       
         
-        // reCloser set
-        this.ranges(document.querySelectorAll(`.${selectData.getSubdivision()}`));
-    }
-};
-
-
-// input data 부터 다시
-// 동작 과정을 여기에
- // submitData
-document.querySelector('#contentInputForm').onsubmit = (e) => {
-    e.preventDefault(); 
-    //save -> dataProcess -> submit 
-
-    //inputData -> processingData 
-    inputData.getContentValue(processingData);
-    
-    // Date classification Dictionary
-    processingData.classification();
-
-    processingData.digit();
-
-    //view data -> element and click closer
-    view.spaceSubmit(processingData);
-
-    //inputFormReset
-    inputData.formReset();
-
-    return;
-   
-}; 
-//수정 : 버튼 클릭이 확실한 변화를 인지하기 쉬움 
-// class 밖에서 변경을 차단하겠다 
-document.querySelector('#contentInputImfCorrection').onclick = (e) =>{
-   
-    //선택 취소 요소의 직접적인 접근 -> 변경을 따라잡기 어렵다 (생각)
-    selectData.setColorChange('cancel');
-    
-    // date 변경 -> 범위, 값 변경
-
-    // t 변경 f 아님
-   if(inputData.getDate() != processingData.date){
-        processingData.classification();
-   }
-
-   processingData.digit();
-}
-
-//         document.querySelector(`#${this.#changeCategory}`).appendChild(selectData.getElement());
-        
-//         //갱신
-//         this.#check ='';
-//         console.log(selectData.getSubdivision());
+//         // reCloser set
 //         this.ranges(document.querySelectorAll(`.${selectData.getSubdivision()}`));
-//     //버튼 조작
-//     buttonFct.setButton('hidden');
-//     // 리셋
-//     inputData.formReset();
+//     }
 // };
+
+
+// // input data 부터 다시
+// // 동작 과정을 여기에
+//  // submitData
+// document.querySelector('#contentInputForm').onsubmit = (e) => {
+//     e.preventDefault(); 
+//     //save -> dataProcess -> submit 
+
+//     //inputData -> processingData 
+//     inputData.getContentValue(processingData);
+    
+//     // Date classification Dictionary
+//     processingData.classification();
+
+//     processingData.digit();
+
+//     //view data -> element and click closer
+//     view.spaceSubmit(processingData);
+
+//     //inputFormReset
+//     inputData.formReset();
+
+//     return;
+   
+// }; 
+// //수정 : 버튼 클릭이 확실한 변화를 인지하기 쉬움 
+// // class 밖에서 변경을 차단하겠다 
+// document.querySelector('#contentInputImfCorrection').onclick = (e) =>{
+   
+//     //선택 취소 요소의 직접적인 접근 -> 변경을 따라잡기 어렵다 (생각)
+//     selectData.setColorChange('cancel');
+
+//      //data 등록    
+//     selectData.setContentValue(dataProcess.dataCompare(processingData));
+//     selectData.getContentValue(processingData);
+//     console.log(processingData.category);
+//     view.ranges(document.querySelectorAll(`.${selectData.getSubdivision()}`));
+//     inputData.formReset();
+// }
+
+// //         document.querySelector(`#${this.#changeCategory}`).appendChild(selectData.getElement());
+        
+// //         //갱신
+// //         this.#check ='';
+// //         console.log(selectData.getSubdivision());
+// //         this.ranges(document.querySelectorAll(`.${selectData.getSubdivision()}`));
+// //     //버튼 조작
+// //     buttonFct.setButton('hidden');
+// //     // 리셋
+// //     inputData.formReset();
+// // };
 
 // // 취소
 // document.querySelector('#contentInputImfCancel').onclick = (e) =>{
@@ -404,15 +465,15 @@ document.querySelector('#contentInputImfCorrection').onclick = (e) =>{
 //     return;
 
 // };
-// // 삭제
-// document.querySelector('#contentInputImfDelete').onclick = (e) =>{
+// // // 삭제
+// // document.querySelector('#contentInputImfDelete').onclick = (e) =>{
 
-//     // 초기화
-//     inputData.formReset();
-//     //버튼 숨기기
-//     buttonFct.setButton('hidden');
-//     //delete
-//     view.deleteElement();
+// //     // 초기화
+// //     inputData.formReset();
+// //     //버튼 숨기기
+// //     buttonFct.setButton('hidden');
+// //     //delete
+// //     view.deleteElement();
     
-//     return;
-// };
+// //     return;
+// // };
