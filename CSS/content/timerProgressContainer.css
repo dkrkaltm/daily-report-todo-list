@@ -29,7 +29,7 @@
 #timerRight span{
     font-size: 1.8rem;
 }
-#timerNow{
+#timerTotal{
     margin-bottom: 35px;
 }
 
@@ -61,22 +61,22 @@
     border-right: solid 2px black;
 }
 
-#progressButton>li:nth-child(1){
+#progressStart{
     background-color: greenyellow;
 }
-#progressButton>li:nth-child(2){
+#progressReset{
     background-color: #FFEBC1;
 }
-#progressButton>li:nth-child(3){
+#progressStop{
     background-color: tomato;
 } 
 
-#progressButton>li:nth-child(1):hover{
+#progressStart:hover{
     background-color: green;
 }
-#progressButton>li:nth-child(2):hover{
+#progressReset:hover{
     background-color: brown;
 }
-#progressButton>li:nth-child(3):hover{
+#progressStop:hover{
     background-color: red;
 }

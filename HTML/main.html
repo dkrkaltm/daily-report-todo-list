@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/content/content.css">
+    <script src="../JS/normalSettings.js" defer></script>
     <script src="../JS/content.js" defer></script>
+    <script src="../JS//timer.js" defer></script>
     <title>DailyReportToDoList</title>
 </head>
 <body>
@@ -27,8 +29,8 @@
                     <span id="timerProgress">00:00:00</span>
                 </div>
                 <div class="timerStyle" id="timerRight">
-                    <label class="explanation" for="timerNow">현재시간</label>
-                    <span id="timerNow">00:00:00</span>
+                    <label class="explanation" for="timerTotal">전체시간</label>
+                    <span id="timerTotal">00:00:00</span>
                     <label class="explanation" for="timerEnd">종료시간</label>
                     <span id="timerEnd">00:00:00</span>
                 </div>
@@ -39,9 +41,9 @@
                     <dd id="progressRod"></dd>
                 </dl>
                 <ol class="progressContainer" id="progressButton">
-                  <li onclick="#" id="progressStart">START</li>
-                  <li onclick="#" id="progreesResume">RESUME</li>   
-                  <li onclick="#" id="progressStop">STOP</li>
+                  <li id="progressStart">시작</li>
+                  <li class="hidden" id="progressReset">시작</li>
+                  <li id="progressReset">재설정</li>   
                 </ol>
             </article>
         </section>
