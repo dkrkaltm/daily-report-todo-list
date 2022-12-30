@@ -138,7 +138,7 @@ const RestTime = new class{
     #timeElement = [];
     #reset = 0;
     #viewHour;
-    #startInter;
+    #restInterval;
     constructor(){
         this.#RestSelect.onchange = () =>{
             
@@ -153,6 +153,7 @@ const RestTime = new class{
         this.#second = timeProcess.secondExtraction(this.#second, this.#timeElement);
         
         this.#reset = this.#second
+
     }
     start(){
 
@@ -160,7 +161,7 @@ const RestTime = new class{
 
         if(this.#second <= 0){
             // 끝나면 -> 진행 시작 -> 휴식시간 초기화 
-          console.log('끝');
+            IntervalManage.restStop();
         
         }
 
@@ -173,7 +174,7 @@ const RestTime = new class{
 }
 
 
-const progressTime = new class{
+const ProgressTime = new class{
 
      #TimerProgress = document.querySelector('#timerProgress');
      
@@ -185,7 +186,7 @@ const progressTime = new class{
 
      #timeElement = [];
 
-     #startInter;
+     #restInterval;
      constructor(){
         
     }
@@ -219,9 +220,11 @@ const progressTime = new class{
       
             totalTime.setData();  
 
-            this.#startInter = setInterval(this.restStart,1000);
+            this.#restInterval = setInterval( IntervalManage.restStart,1000);
             
-            timeButton.stopTimer();
+            IntervalManage.setInterval(this.#restInterval, 'rest');
+
+            IntervalManage.stop();
         }
 
         this.#viewHour =timeProcess.timeExtraction(this.#second, this.#timeElement);
@@ -234,9 +237,7 @@ const progressTime = new class{
         this.#second = this.#resetTime+1;
     
     }
-    restStart(){
-        RestTime.start();
-    }
+   
 }
 
 
@@ -255,7 +256,7 @@ const timeButton = new class{
     constructor(){
         this.#Progress.onclick = (e) => {
           
-            if(progressTime.getTime() === '00:00:00') return; 
+            if(ProgressTime.getTime() === '00:00:00') return; 
             
             if(e.target.innerText === '시작'){
                 
@@ -263,23 +264,25 @@ const timeButton = new class{
                 
                 inputData.formLock(true);
     
-                this.#startTimerInterval= setInterval(this.startTimer, 1000);
-   
+                this.#startTimerInterval= setInterval(IntervalManage.startTimer, 1000);
+                
+                IntervalManage.setInterval(this.#startTimerInterval,'timer');
+           
             }else if(e.target.innerText === '중단'){
-               
+              
                 this.startButtonChange('시작','progressStart');
              
                 inputData.formLock(false);
              
-                this.stopTimer();
+                IntervalManage.stop();
 
             }else if(e.target.innerText === '재설정'){
                 
-                 progressTime.resetTime();
+                 ProgressTime.resetTime();
 
                  if(this.#resetCriteria === '시작'){
 
-                 progressTime.start();
+                 ProgressTime.start();
                  
                 }
                 
@@ -295,24 +298,43 @@ const timeButton = new class{
         this.#resetCriteria = text;
 
     }
-    stopTimer() {
-
-       clearInterval(this.#startTimerInterval);
-    
-    }
+   
     resetButton(){          
     
         this.#Reset.click();             
     
     }
-    startTimer(){         
-    
-        progressTime.start();  
-    
-    }
-
 };
 
+const IntervalManage = new class{
 
+    #timerInterV;
+    #restInterV;
+    constructor(){}
+
+
+    setInterval(interV,kinds){
+
+        if(kinds === timer){
+            this.#timerInterV = interV;
+        }else{
+            this.#restInterV = interV;
+        }
+        
+    }
+
+    startTimer(){         
+        ProgressTime.start();  
+    }
+    restStart(){
+        RestTime.start();
+    }
+    stop() {
+        clearInterval(this.#timerInterV);
+     }
+    restStop(){
+        clearInterval(this.#restInterV);
+    }
+}
 
 // setInterval(timeData.a,1000);

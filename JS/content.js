@@ -15,27 +15,32 @@ const dataProcess = (function(){
     //들어갈 공간을 결정-> 분류
     // date 오늘:viewToday 오전:viewMorning 오후:viewAfternoon
     // category // 세부분류
-    let dateCategoryM = new Map([['오늘','viewToday'],['오전','viewMorning'],['오후','viewAfternoon']]);
    
-    let subdivisionM = new Map([['오늘','viewTodayImf'],['오전','viewMorningImf'],['오후','viewAfternoonImf']]);
     let colorM = new Map([['select','#FFEBC1'],['cancel','#D7A86E']])
-    let selectM = '';
-    let keyM = []
-    
+    let dataM;
+        
+        
     return{
-        spaceClassification(date){
-            // map 사용 법
-            if(date === 'Time' ){
-                return ['오늘', dateCategoryM.get('오늘') , subdivisionM.get('오늘')];
-            }
-            // date value, date value -> changeCategory, subdivisionM
-            return [date,dateCategoryM.get(date),subdivisionM.get(date)];
-
-        },
+     
         colorChange(e,color){
-            console.log('colorChange',e, color);
+         
             e.style.backgroundColor = colorM.get(color);
         },
+        makeMapData(arr){
+        
+
+          dataM = new Map ([
+            ['routine',arr[0]],
+            ['hour', arr[1]],
+            ['minute',arr[2]],
+            ['second',arr[3]],
+            ['work',arr[4]],
+            ['target',arr[5]],
+            ['way',arr[6]]
+          ]);
+
+          return dataM;
+        }
     }
 
 }());
@@ -51,8 +56,7 @@ const inputData = new class{
      #Par = document.querySelector('#contentInputForm');
     // 반복 
      #Routine =  this.#Par.querySelector('#contentInputRepeat');
-    // 요일
-     #Date =  this.#Par.querySelector('#Date');
+
     // selectTime
      #Hour = this.#Par.querySelector('#Hour');
      #Minute =this.#Par.querySelector('#Minute');
@@ -64,10 +68,6 @@ const inputData = new class{
      #Target = this.#Par.querySelector('#contentInputTarget');
     //way
      #Way = this.#Par.querySelector('#contentInputWay'); 
-
-     //분류
-    #Category= '';
-    #Subdivision= '';
 
     // 변경을 위한 공간
     #Chour; #Cminute; #Csecond;
@@ -91,18 +91,14 @@ const inputData = new class{
         // Repeat, Date, Hour, Minute, Second, Work, Target, Way
      viewDataForm(){
             //자릿수 맞추기
-            [this.#Chour, this.#Cminute, this.#Csecond] = timeProcess.digit([this.#Hour.value,this.#Minute.value, this.#Second.value]);
-            console.log( timeProcess.digit([this.#Hour.value,this.#Minute.value, this.#Second.value]));
-            //공간 확보
-            [this.#Date.value, this.#Category, this.#Subdivision]=dataProcess.spaceClassification(this.#Date.value);
+            [this.#Chour, this.#Cminute, this.#Csecond] = timeProcess.digit([this.#Hour.value,this.#Minute.value, this.#Second.value]);  
        }
     // view에 뿌림
      spaceSubmit(){
-        document.querySelector(`#${this.#Category}`).innerHTML+= 
-        `<li class=${this.#Subdivision}>
+        document.querySelector(`.viewImf`).innerHTML+= 
+        `<li>
         <div class="viewImfNav">
             <span class=${this.#Routine.checked ? 'viewImfNavRoutineT':'viewImfNavRoutineF'}>루틴</span>
-            <span name ='date' >${this.#Date.value}</span>
             <span name = 'hour' >${this.#Chour}:${this.#Cminute}:${this.#Csecond}</span>
         </div>
         <div class="viewImfTitle">
@@ -112,15 +108,12 @@ const inputData = new class{
         </div>
         </li>`;
 
-        this.#spaceCircuit = document.querySelectorAll(`.${this.#Subdivision}`);
+        this.#spaceCircuit = document.querySelectorAll(`.viewImf > li`);
         return this.#spaceCircuit;
     
     }
     setRest(v){
         this.#Rest.value = v;
-    }
-    getDate(){
-        return this.#Date.value();
     }
     getChangeData(){
         return this.#inputM;
@@ -129,24 +122,32 @@ const inputData = new class{
 
         this.viewDataForm();
 
-        this.#inputM = new Map([
-            ['category',this.#Category],
-            ['subdivision',this.#Subdivision],
-            ['routine',this.#Routine.checked ? 'viewImfNavRoutineT':'viewImfNavRoutineF'],
-            ['date',this.#Date.value],
-            ['hour',this.#Chour],
-            ['minute', this.#Cminute],
-            ['second', this.#Csecond],
-            ['work',  this.#Work.value],
-            ['target',this.#Target.value],
-            ['way',this.#Way.value]
-        ]);
-
-        console.log(this.#inputM);
+        // this.#inputM = new Map([
+          
+        //     ['routine',this.#Routine.checked ? 'viewImfNavRoutineT':'viewImfNavRoutineF'],
+        //     ['hour',this.#Chour],
+        //     ['minute', this.#Cminute],
+        //     ['second', this.#Csecond],
+        //     ['work',  this.#Work.value],
+        //     ['target',this.#Target.value],
+        //     ['way',this.#Way.value]
+        // ]);
+        this.#inputM = dataProcess.makeMapData(
+         
+            [
+             this.#Routine.checked ? 'viewImfNavRoutineT':'viewImfNavRoutineF'
+            ,this.#Chour
+            ,this.#Cminute
+            ,this.#Csecond
+            ,this.#Work.value
+            ,this.#Target.value
+            ,this.#Way.value
+           ]
+        
+        );
     }
     setElementData(e){
         this.#Routine.checked =  e.get('routine');
-        this.#Date.value = e.get('date');
         this.#Hour.value = e.get('hour');
         this.#Minute.value = e.get('minute');
         this.#Second.value = e.get('second');
@@ -170,8 +171,8 @@ const inputData = new class{
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const selectData = new class{
-    #selectElement; #selectContent; #category; #subdivision;
-    #routine; #date; #time; #work; #target; #way;
+    #selectElement; #selectContent; 
+    #routine; #time; #work; #target; #way;
     #changeCategory;
     #space;
     #check;
@@ -190,7 +191,9 @@ const selectData = new class{
             // 3개의 category 
             // 요소로써 뿌려짐 -> 순서는 상관이 없는 것
             e.onclick = () =>{
-                order.setSetting(e.className, i);
+               
+
+                order.setSetting(i);
 
                 this.setElement(e);
                 //data유형 변경
@@ -199,21 +202,19 @@ const selectData = new class{
                 inputData.setElementData(this.getSelectData());
                 // 처음 선택 -> 아무것도 선택되지 않은 상황
                 // 자기 자신을 선택 -> 취소 -> 초기화
-                progressTime.setSelectTimeSecond(e.querySelector('[name= "hour"]').innerText);
+                ProgressTime.setSelectTimeSecond(e.querySelector('[name= "hour"]').innerText);
                   
                 if(e === this.#check){
                     dataProcess.colorChange(e,'cancel');
                     this.#check = '';
-                    progressTime.setTime(this.#timeCancel);
+                    ProgressTime.setTime(this.#timeCancel);
                     buttonFct.setButton('hidden');
                     inputData.formReset();
                     return;
                 }
                 // 선택된 요소가 아닌 다른 요소를 선택
                 else if(this.#check != '' && this.#check != undefined && e != this.#check){
-                  
                     dataProcess.colorChange(this.#check,'cancel');
-                  
                 }
                 
                 // 기본 요소 변경
@@ -228,51 +229,41 @@ const selectData = new class{
     setElement(e){
         this.#selectElement = e;
         this.#selectContent  = this.#selectElement.querySelectorAll('span');
-        this.#category = this.#selectElement.parentElement;
-        this.#subdivision = this.#selectElement.className;
         this.#routine = this.#selectContent[0];
-        this.#date = this.#selectContent[1];
-        this.#time = this.#selectContent[2];
-        this.#work  = this.#selectContent[3];
-        this.#target = this.#selectContent[4];
-        this.#way = this.#selectContent[5];
+        this.#time = this.#selectContent[1];
+        this.#work  = this.#selectContent[2];
+        this.#target = this.#selectContent[3];
+        this.#way = this.#selectContent[4];
     }
     inputDataForm(){
         [this.#hour, this.#minute,this.#second] = timeProcess.notDigit(this.#time.innerText.split(':'));
         // data 유형 맞추기
-        this.#selectM = new Map([
-            ['category',this.#category.id],
-            ['subdivision',this.#subdivision],
-            ['routine',this.#routine.className.slice(this.#selectContent[0].className.length -1) === 'T'? true : false],
-            ['date',this.#date.innerText],
-            ['hour',this.#hour],
-            ['minute',this.#minute],
-            ['second',this.#second],
-            ['work',this.#work.innerText],
-            ['target',this.#target.innerText],
-            ['way',this.#way.innerText]
-        ]);
+      
+        this.#selectM = dataProcess.makeMapData(
+            [this.#routine.className.slice(this.#selectContent[0].className.length -1) === 'T'? true : false
+                ,this.#hour
+                ,this.#minute
+                ,this.#second
+                ,this.#work.innerText
+                ,this.#target.innerText
+                ,this.#way.innerText
+            ]
+        );
     }
     getSelectData(){
         return this.#selectM;
     }
     setElementData(e){
-        // date  변화 -> 저장 공간 변화 
-        if(this.#selectM.get('category') != e.get('category')){
-            document.querySelector(`#${e.get('category')}`).appendChild(this.#selectElement);    
-        }      
-        this.#selectElement.className  = e.get('subdivision');
         this.#routine.className = e.get('routine');
-        this.#date.innerText = e.get('date');
         this.#time.innerText = [e.get('hour'),e.get('minute'),e.get('second')].join(':');
         this.#work.innerText = e.get('work');
         this.#target.innerText = e.get('target');
         this.#way.innerText = e.get('way');
     }
     removeElement(){
-        this.#subdivision = this.#selectElement.className;
+        
         this.#selectElement.remove();
-        console.log(document.querySelectorAll(`.${this.#subdivision}`));
+
     }
     setColorChange(color){
         dataProcess.colorChange(this.#selectElement, color);
@@ -294,7 +285,7 @@ const buttonFct = new class{
     #Cancel = document.querySelector('#contentInputImfCancel');
     #Delete = document.querySelector('#contentInputImfDelete');
     
-    #submitElement;
+    #spaceRenewal;
     #timeCancel = '00:00:00';
     constructor(){
         // 등록
@@ -302,12 +293,11 @@ const buttonFct = new class{
           
             e.preventDefault('false');
 
-            //viewData로 만들기
             inputData.viewDataForm();
 
-            this.#submitElement= inputData.spaceSubmit();
-            // 클릭을 위해 요소 렉시컬 환경 요소 등록
-            selectData.ranges(this.#submitElement);
+            this.#spaceRenewal= inputData.spaceSubmit();
+        
+            selectData.ranges(this.#spaceRenewal);
             
             inputData.formReset();
             
@@ -367,7 +357,7 @@ const buttonFct = new class{
         
         this.setButton('hidden');
         
-        progressTime.setTime(this.#timeCancel);
+        ProgressTime.setTime(this.#timeCancel);
    
     }
 
@@ -375,11 +365,10 @@ const buttonFct = new class{
 
 // testCase
 (function(){
-    document.querySelector(`#viewToday`).innerHTML+= 
-    `<li class="viewTodayImf">
+    document.querySelector(`.viewImf`).innerHTML+= 
+    `<li>
     <div class="viewImfNav">
         <span class= 'viewImfNavRoutineF'}>루틴</span>
-        <span name ='date' >오늘</span>
         <span name = 'hour' >00:00:03</span>
     </div>
     <div class="viewImfTitle">
@@ -389,6 +378,6 @@ const buttonFct = new class{
     </div>
     </li>`;
     
-    selectData.ranges(document.querySelectorAll(".viewTodayImf"));
-    navElement.con();
+    selectData.ranges(document.querySelectorAll(".viewImf > li"));
+    
 }());

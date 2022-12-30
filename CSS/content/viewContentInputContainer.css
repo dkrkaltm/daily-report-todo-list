@@ -1,25 +1,10 @@
 
-#viewSelect{
-    display: flex;
-    margin-bottom: 15px;
-}
-#viewSelect li{
-    margin-right: 15px;
-    font-weight: 600;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-}
-#viewSelect li:hover{
-    color:#FFEBC1;
-}
-#viewAll{
-    color:#FFEBC1;
-}
+
 
 #view{
     overflow-y: auto;
     height:85%;
+    margin-top: 15px;
 }
 .viewImf{
     display: flex;
