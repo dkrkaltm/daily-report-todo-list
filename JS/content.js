@@ -57,6 +57,7 @@ const inputData = new class{
      #Hour = this.#Par.querySelector('#Hour');
      #Minute =this.#Par.querySelector('#Minute');
      #Second = this.#Par.querySelector('#Second');
+     #Rest = this.#Par.querySelector('#Rest');
      //do
      #Work = this.#Par.querySelector('#contentInputWork');
     //target
@@ -84,7 +85,7 @@ const inputData = new class{
     #Button = this.#Par.getElementsByTagName('button');
         constructor(){
             // 시간 선택 범위
-            timeSetting.save(this.#Hour,this.#Minute, this.#Second);
+            timeSetting.save(this.#Hour,this.#Minute, this.#Second,this.#Rest);
         }
         
         // Repeat, Date, Hour, Minute, Second, Work, Target, Way
@@ -115,7 +116,9 @@ const inputData = new class{
         return this.#spaceCircuit;
     
     }
-   
+    setRest(v){
+        this.#Rest.value = v;
+    }
     getDate(){
         return this.#Date.value();
     }
@@ -182,13 +185,13 @@ const selectData = new class{
         // onclick -> foreach의 렉시컬 환경을 참조함 
         // forEach가 호출 될 때 마다 onclick도 생겨나며 그 onclick은 서로다른 forEach의 렉시컬 환경을 참조한다
         // 2022.12.14
-    
+        
         e.forEach( (e,i,arr) => {
             // 3개의 category 
             // 요소로써 뿌려짐 -> 순서는 상관이 없는 것
             e.onclick = () =>{
-                
-                console.log(e);
+                order.setSetting(e.className, i);
+
                 this.setElement(e);
                 //data유형 변경
                 this.inputDataForm();
@@ -196,19 +199,19 @@ const selectData = new class{
                 inputData.setElementData(this.getSelectData());
                 // 처음 선택 -> 아무것도 선택되지 않은 상황
                 // 자기 자신을 선택 -> 취소 -> 초기화
-                timeData.setProgressText(e.querySelector('[name= "hour"]').innerText);
-                timeProcess.makeSecond(timeData.getProgressText());  
-             
+                progressTime.setSelectTimeSecond(e.querySelector('[name= "hour"]').innerText);
+                  
                 if(e === this.#check){
                     dataProcess.colorChange(e,'cancel');
                     this.#check = '';
-                    timeData.setProgressText(this.#timeCancel);
+                    progressTime.setTime(this.#timeCancel);
                     buttonFct.setButton('hidden');
                     inputData.formReset();
                     return;
                 }
                 // 선택된 요소가 아닌 다른 요소를 선택
                 else if(this.#check != '' && this.#check != undefined && e != this.#check){
+                  
                     dataProcess.colorChange(this.#check,'cancel');
                   
                 }
@@ -284,7 +287,7 @@ const selectData = new class{
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 const buttonFct = new class{
 
-    #Submit = document.querySelector('#contentInputForm');
+    #Form = document.querySelector('#contentInputForm');
 
     #Enrollment = document.querySelector('#contentInputImfSubmit');
     #Correction = document.querySelector('#contentInputImfCorrection');
@@ -295,9 +298,9 @@ const buttonFct = new class{
     #timeCancel = '00:00:00';
     constructor(){
         // 등록
-        this.#Submit.onsubmit = (e) =>{
-            console.log('submit');
-            e.preventDefault();
+        this.#Form.onsubmit = (e) =>{
+          
+            e.preventDefault('false');
 
             //viewData로 만들기
             inputData.viewDataForm();
@@ -305,70 +308,79 @@ const buttonFct = new class{
             this.#submitElement= inputData.spaceSubmit();
             // 클릭을 위해 요소 렉시컬 환경 요소 등록
             selectData.ranges(this.#submitElement);
-
+            
             inputData.formReset();
-            timeData.totalHour();
+            
+            totalTime.setData();
+       
         },
         // 수정
         this.#Correction.onclick = (e) => {
-            console.log('correct');
             // 수정본저장
             inputData.setChangeData();
-
             // 수정본 selectData에 저장
             selectData.setElementData(inputData.getChangeData());
-            selectData.setColorChange('cancel');
-            selectData.setCheck('');
-            timeData.setProgressText(this.#timeCancel);
-            this.setButton('hidden');
 
-            inputData.formReset();
-            timeData.totalHour();
+            this.reNormalSetting();
+            
+            totalTime.setData();
         
         },
         //취소
         this.#Cancel.onclick = (e) => {
-            console.log('cancel');
-            selectData.setColorChange('cancel');
-            selectData.setCheck('');
-            timeData.setProgressText(this.#timeCancel);
-            this.setButton('hidden');
-            
-            inputData.formReset();
+       
+            this.reNormalSetting();
         }
         ,
         //삭제
         this.#Delete.onclick = (e) => {
-            console.log('delete');
-            selectData.setColorChange('cancel');
-            selectData.setCheck('');
+         
             selectData.removeElement();
-            timeData.setProgressText(this.#timeCancel);
+        
             this.setButton('hidden');  
-            
-            inputData.formReset();
-            timeData.totalHour();
+           
+            this.reNormalSetting();
+          
+            totalTime.setData();
         }
 
     }
 
     setButton(name){
+       
         this.#Enrollment.className = name === '' ? 'hidden' : '';
+        
         this.#Correction.className = name;
+       
         this.#Cancel.className = name;
+       
         this.#Delete.className = name;
+  
+    }
+    reNormalSetting(){
+        
+        selectData.setColorChange('cancel');
+        
+        selectData.setCheck('');
+        
+        inputData.formReset();
+        
+        this.setButton('hidden');
+        
+        progressTime.setTime(this.#timeCancel);
+   
     }
 
 };
 
-
+// testCase
 (function(){
     document.querySelector(`#viewToday`).innerHTML+= 
     `<li class="viewTodayImf">
     <div class="viewImfNav">
         <span class= 'viewImfNavRoutineF'}>루틴</span>
         <span name ='date' >오늘</span>
-        <span name = 'hour' >01:01:01</span>
+        <span name = 'hour' >00:00:03</span>
     </div>
     <div class="viewImfTitle">
         <span name = 'work' >abcd</span>
@@ -378,4 +390,5 @@ const buttonFct = new class{
     </li>`;
     
     selectData.ranges(document.querySelectorAll(".viewTodayImf"));
+    navElement.con();
 }());

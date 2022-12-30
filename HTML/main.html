@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/content/content.css">
     <script src="../JS/normalSettings.js" defer></script>
+    <script src="../JS//navOrder.js" defer></script>
     <script src="../JS/content.js" defer></script>
     <script src="../JS//timer.js" defer></script>
+    
     <title>DailyReportToDoList</title>
 </head>
 <body>
@@ -31,8 +33,8 @@
                 <div class="timerStyle" id="timerRight">
                     <label class="explanation" for="timerTotal">전체시간</label>
                     <span id="timerTotal">00:00:00</span>
-                    <label class="explanation" for="timerEnd">종료시간</label>
-                    <span id="timerEnd">00:00:00</span>
+                    <label class="explanation" for="timerRest">휴식시간</label>
+                    <span id="timerRest">00:00:00</span>
                 </div>
             </article>
             <article id="progress">
@@ -92,6 +94,9 @@
                         
                         <select   name="Second" id="Second">
                             <option value="Second" selected>Second</option>
+                        </select>
+                        <select name="Rest" id="Rest">
+                            <option value="Rest">Rest</option>
                         </select>
                     
                     </div>
